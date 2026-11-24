@@ -3,7 +3,9 @@ import { useOutletContext } from 'react-router-dom';
 import ExerciseMenu from '../components/ExerciseMenu';
 import { exerciseData } from '../data/exerciseData';
 import {
+  CheckCircle,
   CheckCircle2,
+  XCircle,
   RotateCcw,
   Trophy,
   Sparkles,
@@ -12,19 +14,43 @@ import {
 export default function Cm1Page() {
   const { activeModule } = useOutletContext();
 
+  const [selectedExercise, setSelectedExercise] = useState(null);
+  const [feedback, setFeedback] = useState(null);
+  const [score, setScore] = useState(0);
+
+  const [textInput, setTextInput] = useState('');
+  const [clickedTarget, setClickedTarget] = useState(null);
+  const [categories, setCategories] = useState({});
+
   const [challengeAnswers, setChallengeAnswers] = useState({});
   const [challengeLocked, setChallengeLocked] = useState({});
   const [challengeSubmitted, setChallengeSubmitted] = useState(false);
   const [challengeFinalScore, setChallengeFinalScore] = useState(0);
 
-  const currentExercises = exerciseData.cm1?.[activeModule] || [];
+  const currentExercises =
+    activeModule === 'francaise'
+      ? exerciseData.ce2?.francaise || []
+      : exerciseData.cm1?.[activeModule] || [];
+
+  const resetGameState = () => {
+    setFeedback(null);
+    setTextInput('');
+    setClickedTarget(null);
+    setCategories({});
+  };
 
   useEffect(() => {
+    setSelectedExercise(null);
+    resetGameState();
     setChallengeAnswers({});
     setChallengeLocked({});
     setChallengeSubmitted(false);
     setChallengeFinalScore(0);
   }, [activeModule]);
+
+  useEffect(() => {
+    resetGameState();
+  }, [selectedExercise]);
 
   const handleChallengeAnswer = (exId, value) => {
     if (challengeLocked[exId]) return;
@@ -37,7 +63,11 @@ export default function Cm1Page() {
     return str
       .trim()
       .toUpperCase()
-      .replace(/[\u064B-\u065F]/g, '');
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[\u064B-\u065F]/g, '')
+      .replace(/[.,!?;:]+$/g, '')
+      .replace(/\s+/g, ' ');
   };
 
   const handleSubmitChallenge = () => {
@@ -59,7 +89,10 @@ export default function Cm1Page() {
       }
     });
 
-    const total = Math.round((correctCount / currentExercises.length) * 10);
+    const total =
+      currentExercises.length > 0
+        ? Math.round((correctCount / currentExercises.length) * 10)
+        : 0;
     setChallengeFinalScore(total);
     setChallengeSubmitted(true);
   };
@@ -71,6 +104,141 @@ export default function Cm1Page() {
     setChallengeFinalScore(0);
   };
 
+  const renderInformatiqueGame = (ex) => {
+    switch (ex.type) {
+      case 'categorization': {
+        const categoryOptions = ['Entrée', 'Sortie'];
+        return (
+          <div className="space-y-6 text-center max-w-md mx-auto">
+            <p className="text-sm font-bold text-slate-600">{ex.description}</p>
+            <div className="space-y-3">
+              {ex.items.map((it, idx) => (
+                <div
+                  key={idx}
+                  className="p-4 bg-white border-2 border-slate-200 rounded-2xl flex items-center justify-between gap-3 shadow-sm"
+                >
+                  <span className="font-bold text-slate-700 text-left">
+                    {it.name}
+                  </span>
+                  <div className="flex gap-2 shrink-0">
+                    {categoryOptions.map((cat) => {
+                      const isChosen = categories[idx] === cat;
+                      const isRight = cat === it.category;
+                      return (
+                        <button
+                          key={cat}
+                          onClick={() => {
+                            if (categories[idx]) return;
+                            setCategories((prev) => ({ ...prev, [idx]: cat }));
+                            if (isRight) {
+                              setFeedback({
+                                success: true,
+                                message: `Bravo ! ${it.name} est un périphérique de ${cat}.`,
+                              });
+                              setScore((s) => s + 5);
+                            } else {
+                              setFeedback({
+                                success: false,
+                                message: `Oups ! ${it.name} n'est pas dans "${cat}".`,
+                              });
+                            }
+                          }}
+                          className={`px-3 py-1.5 rounded-xl font-black text-xs cursor-pointer border-2 transition-all ${
+                            isChosen
+                              ? isRight
+                                ? 'bg-emerald-500 text-white border-emerald-600'
+                                : 'bg-rose-500 text-white border-rose-600'
+                              : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
+                          }`}
+                        >
+                          {cat}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+
+      case 'click_target':
+        return (
+          <div className="space-y-6 text-center max-w-md mx-auto">
+            <p className="text-sm font-bold text-slate-600">{ex.description}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {ex.items.map((item, idx) => {
+                const isCorrect = item === ex.targetWord;
+                const isChosen = clickedTarget === idx;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => {
+                      setClickedTarget(idx);
+                      if (isCorrect) {
+                        setFeedback({
+                          success: true,
+                          message: `Bravo ! "${item}" est le bon choix.`,
+                        });
+                        setScore((s) => s + 10);
+                      } else {
+                        setFeedback({
+                          success: false,
+                          message: `Oups ! "${item}" ne correspond pas à la consigne.`,
+                        });
+                      }
+                    }}
+                    className={`p-5 border-2 rounded-2xl font-black text-sm shadow-sm transition-all cursor-pointer ${
+                      isChosen
+                        ? isCorrect
+                          ? 'bg-emerald-500 border-emerald-600 text-white'
+                          : 'bg-rose-500 border-rose-600 text-white'
+                        : 'bg-indigo-50 hover:bg-indigo-100 border-indigo-200 text-slate-700'
+                    }`}
+                  >
+                    💻 {item}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        );
+
+      case 'text_copy':
+        return (
+          <div className="space-y-6 text-center max-w-md mx-auto">
+            <p className="text-sm font-bold text-slate-600">{ex.description}</p>
+            <div className="p-4 bg-white border-2 border-dashed border-indigo-300 rounded-2xl font-bold text-indigo-900 text-base shadow-sm">
+              "{ex.targetText}"
+            </div>
+            <textarea
+              value={textInput}
+              placeholder="Recopie le texte exactement ici..."
+              className="w-full p-4 bg-slate-50 border-2 border-slate-300 rounded-xl font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              rows={3}
+              onChange={(e) => {
+                const val = e.target.value;
+                setTextInput(val);
+                if (val.trim() === ex.targetText.trim()) {
+                  setFeedback({
+                    success: true,
+                    message: 'Parfait ! Texte recopié sans aucune faute !',
+                  });
+                  setScore((s) => s + 10);
+                } else {
+                  setFeedback(null);
+                }
+              }}
+            />
+          </div>
+        );
+
+      default:
+        return <p className="text-center text-slate-500">Jeu en construction...</p>;
+    }
+  };
+
   const renderChallengePage = (moduleTitle, gradientColor) => {
     const allAnswered =
       currentExercises.length > 0 &&
@@ -78,15 +246,20 @@ export default function Cm1Page() {
     const isArabicModule = activeModule === 'arabe';
 
     return (
-      <div className="max-w-3xl mx-auto space-y-6 pb-8" dir={isArabicModule ? 'rtl' : 'ltr'}>
-        <div className={`bg-gradient-to-r ${gradientColor} p-6 rounded-3xl text-white shadow-lg flex items-center justify-between`}>
+      <div
+        className="max-w-3xl mx-auto space-y-6 pb-8"
+        dir={isArabicModule ? 'rtl' : 'ltr'}
+      >
+        <div
+          className={`bg-gradient-to-r ${gradientColor} p-6 rounded-3xl text-white shadow-lg flex items-center justify-between`}
+        >
           <div>
             <span className="bg-white/25 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">
-              {isArabicModule ? 'تحدي المستوى الرابع ابتدائي (CM1)' : 'Grand Challenge CM1'}
+              {isArabicModule
+                ? 'تحدي المستوى الرابع ابتدائي (CM1)'
+                : 'Grand Challenge CM1'}
             </span>
-            <h2 className="text-2xl font-black mt-2">
-              {moduleTitle}
-            </h2>
+            <h2 className="text-2xl font-black mt-2">{moduleTitle}</h2>
             <p className="text-xs sm:text-sm text-white/90 mt-1">
               {isArabicModule
                 ? `أجب عن التمارين التالية (${currentExercises.length} أسئلة). بمجرد اختيار الإجابة يتم قفلها!`
@@ -102,15 +275,21 @@ export default function Cm1Page() {
               <Trophy className="w-10 h-10" />
             </div>
             <h3 className="text-2xl font-black text-slate-800">
-              {isArabicModule ? 'انتهى التحدي بنجاح!' : 'Challenge Terminé !'}
+              {isArabicModule
+                ? 'انتهى التحدي بنجاح!'
+                : 'Challenge Terminé !'}
             </h3>
             <div className="text-4xl font-black text-amber-600 bg-amber-50 py-4 px-8 rounded-2xl inline-block border-2 border-amber-200">
               {challengeFinalScore} / 10
             </div>
             <p className="text-sm text-slate-600 font-medium">
               {challengeFinalScore === 10
-                ? (isArabicModule ? 'ممتاز جداً! علامة كاملة!' : 'Incroyable ! Sans faute !')
-                : (isArabicModule ? 'عمل رائع! استمر هكذا.' : 'Beau travail ! Continue de t’entraîner.')}
+                ? isArabicModule
+                  ? 'ممتاز جداً! علامة كاملة!'
+                  : 'Incroyable ! Sans faute !'
+                : isArabicModule
+                ? 'عمل رائع! استمر هكذا.'
+                : 'Beau travail ! Continue de t’entraîner.'}
             </p>
             <div>
               <button
@@ -118,7 +297,9 @@ export default function Cm1Page() {
                 className="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-2xl shadow-md transition-all flex items-center gap-2 mx-auto cursor-pointer"
               >
                 <RotateCcw className="w-4 h-4" />{' '}
-                {isArabicModule ? 'إعادة التحدي' : 'Recommencer le Challenge'}
+                {isArabicModule
+                  ? 'إعادة التحدي'
+                  : 'Recommencer le Challenge'}
               </button>
             </div>
           </div>
@@ -129,7 +310,8 @@ export default function Cm1Page() {
               const cardIsArabic = ex.lang ? ex.lang === 'ar' : isArabicModule;
               const showSectionHeader =
                 ex.section &&
-                (index === 0 || currentExercises[index - 1].section !== ex.section);
+                (index === 0 ||
+                  currentExercises[index - 1].section !== ex.section);
 
               return (
                 <React.Fragment key={ex.id}>
@@ -148,7 +330,11 @@ export default function Cm1Page() {
                     dir={cardIsArabic ? 'rtl' : 'ltr'}
                     className={`bg-white p-6 rounded-3xl border-2 shadow-sm transition-all ${
                       cardIsArabic ? 'text-right' : 'text-left'
-                    } ${isLocked ? 'border-emerald-200 bg-emerald-50/20' : 'border-slate-200'}`}
+                    } ${
+                      isLocked
+                        ? 'border-emerald-200 bg-emerald-50/20'
+                        : 'border-slate-200'
+                    }`}
                   >
                     <div className="flex items-center justify-between mb-3">
                       <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-black">
@@ -159,7 +345,9 @@ export default function Cm1Page() {
                       {isLocked && (
                         <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full">
                           <CheckCircle2 className="w-3.5 h-3.5" />{' '}
-                          {cardIsArabic ? 'تم قفل الإجابة' : 'Réponse verrouillée'}
+                          {cardIsArabic
+                            ? 'تم قفل الإجابة'
+                            : 'Réponse verrouillée'}
                         </span>
                       )}
                     </div>
@@ -176,7 +364,9 @@ export default function Cm1Page() {
                             <button
                               key={optIdx}
                               disabled={isLocked}
-                              onClick={() => handleChallengeAnswer(ex.id, option)}
+                              onClick={() =>
+                                handleChallengeAnswer(ex.id, option)
+                              }
                               className={`p-4 rounded-2xl border-2 font-black text-sm transition-all ${
                                 cardIsArabic ? 'text-right' : 'text-left'
                               } ${
@@ -299,6 +489,11 @@ export default function Cm1Page() {
         <h1 className="text-2xl font-black text-slate-800 uppercase">
           CM1 — Module : {activeModule}
         </h1>
+        {selectedExercise && activeModule === 'informatique' && (
+          <div className="flex items-center gap-2 px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-black">
+            <Trophy className="w-4 h-4" /> Score : {score} pts
+          </div>
+        )}
       </div>
 
       {activeModule === 'arabe' ? (
@@ -316,11 +511,69 @@ export default function Cm1Page() {
           'Module النشاط العلمي & Mathématiques',
           'from-rose-500 to-red-600'
         )
-      ) : (
+      ) : !selectedExercise ? (
         <ExerciseMenu
           exercises={currentExercises}
-          onSelectExercise={() => {}}
+          onSelectExercise={(ex) => {
+            setSelectedExercise(ex);
+            setFeedback(null);
+          }}
         />
+      ) : (
+        <div className="bg-white/90 p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => {
+                setSelectedExercise(null);
+                resetGameState();
+              }}
+              className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full text-xs font-black uppercase tracking-wider cursor-pointer"
+            >
+              ← Retour aux exercices
+            </button>
+            <span className="text-xs font-bold text-indigo-500 uppercase tracking-wide">
+              Exercice {selectedExercise.id} / {currentExercises.length}
+            </span>
+          </div>
+
+          <div className="text-center space-y-1">
+            {selectedExercise.section && (
+              <span className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-black mb-1">
+                {selectedExercise.section}
+              </span>
+            )}
+            <h2 className="text-xl font-black text-indigo-600">
+              {selectedExercise.title}
+            </h2>
+          </div>
+
+          <div className="py-4">{renderInformatiqueGame(selectedExercise)}</div>
+
+          {feedback && (
+            <div
+              className={`p-4 rounded-2xl flex items-center justify-between border-2 ${
+                feedback.success
+                  ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                  : 'bg-rose-50 border-rose-200 text-rose-800'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                {feedback.success ? (
+                  <CheckCircle className="w-6 h-6 text-emerald-600" />
+                ) : (
+                  <XCircle className="w-6 h-6 text-rose-600" />
+                )}
+                <span className="font-black text-sm">{feedback.message}</span>
+              </div>
+              <button
+                onClick={resetGameState}
+                className="p-2 hover:bg-white/50 rounded-xl text-xs font-bold flex items-center gap-1 cursor-pointer"
+              >
+                <RotateCcw className="w-4 h-4" /> Réessayer
+              </button>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

@@ -136,7 +136,7 @@ export default function CpPage() {
     return str
       .trim()
       .toUpperCase()
-      .replace(/[\u064B-\u065F]/g, ''); // Ignore les harakat (تشكيل)
+      .replace(/[\u064B-\u065F]/g, ''); 
   };
 
   const handleSubmitChallenge = () => {

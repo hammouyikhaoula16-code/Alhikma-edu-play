@@ -7,10 +7,33 @@ import {
   RotateCcw,
   Trophy,
   Sparkles,
+  CheckCircle,
+  XCircle,
 } from 'lucide-react';
+
+const PRINTER_PIECE_POSITIONS = {
+  0: '0% 0%',
+  1: '50% 0%',
+  2: '100% 0%',
+  3: '0% 100%',
+  4: '50% 100%',
+  5: '100% 100%',
+};
 
 export default function Ce1Page() {
   const { activeModule } = useOutletContext();
+
+  const [selectedExercise, setSelectedExercise] = useState(null);
+  const [feedback, setFeedback] = useState(null);
+  const [score, setScore] = useState(0);
+  
+  const [availablePieces, setAvailablePieces] = useState([]);
+  const [boardSlots, setBoardSlots] = useState([null, null, null, null, null, null]);
+  const [draggedPiece, setDraggedPiece] = useState(null);
+  const [selectedWords, setSelectedWords] = useState([]);
+  const [textInput, setTextInput] = useState('');
+  const [clickedTarget, setClickedTarget] = useState(null);
+  const [categories, setCategories] = useState({});
 
   const [challengeAnswers, setChallengeAnswers] = useState({});
   const [challengeLocked, setChallengeLocked] = useState({});
@@ -19,12 +42,55 @@ export default function Ce1Page() {
 
   const currentExercises = exerciseData.ce1?.[activeModule] || [];
 
+  const initPrinterPuzzle = () => {
+    const shuffled = [0, 1, 2, 3, 4, 5].sort(() => Math.random() - 0.5);
+    setAvailablePieces(shuffled);
+    setBoardSlots([null, null, null, null, null, null]);
+  };
+
   useEffect(() => {
+    setSelectedExercise(null);
+    setFeedback(null);
     setChallengeAnswers({});
     setChallengeLocked({});
     setChallengeSubmitted(false);
     setChallengeFinalScore(0);
   }, [activeModule]);
+
+  useEffect(() => {
+    if (selectedExercise?.type === 'puzzle_6') {
+      initPrinterPuzzle();
+    }
+    setFeedback(null);
+    setSelectedWords([]);
+    setTextInput('');
+    setClickedTarget(null);
+    setCategories({});
+  }, [selectedExercise]);
+
+  const handleDropOnPrinterSlot = (slotIndex) => {
+    if (draggedPiece === null) return;
+    const newBoard = [...boardSlots];
+    const previousPieceInSlot = newBoard[slotIndex];
+
+    newBoard[slotIndex] = draggedPiece;
+    setBoardSlots(newBoard);
+
+    setAvailablePieces((prev) => {
+      const updated = prev.filter((p) => p !== draggedPiece);
+      if (previousPieceInSlot !== null) updated.push(previousPieceInSlot);
+      return updated;
+    });
+
+    setDraggedPiece(null);
+
+    if (newBoard.every((val, idx) => val === idx)) {
+      setFeedback({ success: true, message: 'Bravo ! Tu as reconstitué l’imprimante !' });
+      setScore((s) => s + 20);
+    } else if (newBoard.every((val) => val !== null)) {
+      setFeedback({ success: false, message: 'Certaines pièces ne sont pas à la bonne place !' });
+    }
+  };
 
   const handleChallengeAnswer = (exId, value) => {
     if (challengeLocked[exId]) return;
@@ -69,6 +135,197 @@ export default function Ce1Page() {
     setChallengeLocked({});
     setChallengeSubmitted(false);
     setChallengeFinalScore(0);
+  };
+
+  const renderInformatiqueGame = (ex) => {
+    switch (ex.type) {
+      case 'puzzle_6':
+        return (
+          <div className="space-y-6 flex flex-col items-center">
+            <p className="text-sm font-bold text-slate-600 text-center">{ex.description}</p>
+            <div className="grid grid-cols-3 w-80 h-60 sm:w-96 sm:h-72 bg-slate-200 border-4 border-indigo-500 rounded-2xl overflow-hidden shadow-lg">
+              {boardSlots.map((pieceId, slotIndex) => (
+                <div
+                  key={slotIndex}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={() => handleDropOnPrinterSlot(slotIndex)}
+                  className="relative border border-dashed border-indigo-300 flex items-center justify-center bg-slate-100/70"
+                >
+                  {pieceId !== null ? (
+                    <div
+                      className="w-full h-full"
+                      style={{
+                        backgroundImage: `url(${ex.imageUrl})`,
+                        backgroundSize: '300% 200%',
+                        backgroundPosition: PRINTER_PIECE_POSITIONS[pieceId],
+                      }}
+                    />
+                  ) : (
+                    <span className="text-indigo-300 font-black text-lg">{slotIndex + 1}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-wrap justify-center gap-2 p-3 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-300 w-full max-w-lg">
+              {availablePieces.map((pieceId) => (
+                <div
+                  key={pieceId}
+                  draggable
+                  onDragStart={() => setDraggedPiece(pieceId)}
+                  className="w-24 h-20 rounded-xl border-2 border-white shadow-md cursor-grab active:cursor-grabbing"
+                  style={{
+                    backgroundImage: `url(${ex.imageUrl})`,
+                    backgroundSize: '300% 200%',
+                    backgroundPosition: PRINTER_PIECE_POSITIONS[pieceId],
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'word_search':
+        return (
+          <div className="space-y-6 text-center max-w-md mx-auto">
+            <p className="text-sm font-bold text-slate-600">{ex.description}</p>
+            <div className="p-4 bg-indigo-50 border-2 border-indigo-200 rounded-2xl inline-block">
+              <div className="grid grid-cols-7 gap-1.5">
+                {ex.grid.flat().map((letter, idx) => {
+                  const isSelected = selectedWords.includes(idx);
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        const newSelected = isSelected
+                          ? selectedWords.filter((i) => i !== idx)
+                          : [...selectedWords, idx];
+                        setSelectedWords(newSelected);
+                      }}
+                      className={`w-10 h-10 rounded-lg font-black text-base flex items-center justify-center border-2 transition-all cursor-pointer ${
+                        isSelected
+                          ? 'bg-emerald-500 border-emerald-600 text-white scale-105'
+                          : 'bg-white border-slate-300 text-slate-700 hover:bg-indigo-100'
+                      }`}
+                    >
+                      {letter}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-center gap-2">
+              {ex.wordsToFind.map((word, wIdx) => (
+                <span key={wIdx} className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-black">
+                  🔍 {word}
+                </span>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'text_copy':
+        return (
+          <div className="space-y-6 text-center max-w-md mx-auto">
+            <p className="text-sm font-bold text-slate-600">{ex.description}</p>
+            <div className="p-4 bg-white border-2 border-dashed border-indigo-300 rounded-2xl font-bold text-indigo-900 text-base shadow-sm">
+              "{ex.targetText}"
+            </div>
+            <textarea
+              value={textInput}
+              placeholder="Écris le texte exactement ici..."
+              className="w-full p-4 bg-slate-50 border-2 border-slate-300 rounded-xl font-bold text-slate-800 focus:ring-2 focus:ring-indigo-400"
+              rows={3}
+              onChange={(e) => {
+                setTextInput(e.target.value);
+                if (e.target.value.trim() === ex.targetText.trim()) {
+                  setFeedback({ success: true, message: 'Parfait ! Texte recopié sans fautes !' });
+                  setScore((s) => s + 10);
+                } else {
+                  setFeedback(null);
+                }
+              }}
+            />
+          </div>
+        );
+
+      case 'click_target':
+        return (
+          <div className="space-y-6 text-center max-w-md mx-auto">
+            <p className="text-sm font-bold text-slate-600">{ex.description}</p>
+            <div className="grid grid-cols-2 gap-4">
+              {ex.items.map((item, idx) => {
+                const isCorrect = item === ex.targetWord;
+                const isChosen = clickedTarget === idx;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => {
+                      setClickedTarget(idx);
+                      if (isCorrect) {
+                        setFeedback({ success: true, message: `Bravo ! ${item} est correct.` });
+                        setScore((s) => s + 10);
+                      } else {
+                        setFeedback({ success: false, message: `Oups ! Ce n'est pas le bon élément.` });
+                      }
+                    }}
+                    className={`p-6 border-2 rounded-2xl font-black text-sm shadow-sm transition-all cursor-pointer ${
+                      isChosen
+                        ? isCorrect
+                          ? 'bg-emerald-500 border-emerald-600 text-white'
+                          : 'bg-rose-500 border-rose-600 text-white'
+                        : 'bg-indigo-50 hover:bg-indigo-100 border-indigo-200 text-slate-700'
+                    }`}
+                  >
+                    🖱️ {item}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        );
+
+      case 'categorization':
+        return (
+          <div className="space-y-6 text-center max-w-md mx-auto">
+            <p className="text-sm font-bold text-slate-600">{ex.description}</p>
+            <div className="space-y-3">
+              {ex.items.map((it, idx) => (
+                <div key={idx} className="p-4 bg-white border-2 border-slate-200 rounded-2xl flex items-center justify-between shadow-sm">
+                  <span className="font-bold text-slate-700">{it.name}</span>
+                  <div className="flex gap-2">
+                    {['Interne', 'Externe'].map((cat) => (
+                      <button
+                        key={cat}
+                        onClick={() => {
+                          setCategories((prev) => ({ ...prev, [idx]: cat }));
+                          if (cat === it.category) {
+                            setFeedback({ success: true, message: 'Bon classement !' });
+                            setScore((s) => s + 5);
+                          } else {
+                            setFeedback({ success: false, message: 'Mauvais classement !' });
+                          }
+                        }}
+                        className={`px-3 py-1.5 rounded-xl font-black text-xs cursor-pointer border-2 transition-all ${
+                          categories[idx] === cat
+                            ? cat === it.category
+                              ? 'bg-emerald-500 text-white border-emerald-600'
+                              : 'bg-rose-500 text-white border-rose-600'
+                            : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      default:
+        return <p>Jeu en construction...</p>;
+    }
   };
 
   const renderChallengePage = (moduleName, gradientColor) => {
@@ -271,6 +528,11 @@ export default function Ce1Page() {
         <h1 className="text-2xl font-black text-slate-800 uppercase">
           CE1 — Module : {activeModule}
         </h1>
+        {selectedExercise && activeModule === 'informatique' && (
+          <div className="flex items-center gap-2 px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-black">
+            <Trophy className="w-4 h-4" /> Score : {score} pts
+          </div>
+        )}
       </div>
 
       {activeModule === 'arabe' ? (
@@ -279,11 +541,52 @@ export default function Ce1Page() {
         renderChallengePage('Française', 'from-green-500 to-emerald-600')
       ) : activeModule === 'mathematique' ? (
         renderChallengePage('Mathématique', 'from-rose-500 to-red-600')
-      ) : (
+      ) : !selectedExercise ? (
         <ExerciseMenu
           exercises={currentExercises}
-          onSelectExercise={() => {}}
+          onSelectExercise={(ex) => {
+            setSelectedExercise(ex);
+            setFeedback(null);
+          }}
         />
+      ) : (
+        <div className="bg-white/90 p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => {
+                setSelectedExercise(null);
+                setFeedback(null);
+              }}
+              className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full text-xs font-black uppercase tracking-wider cursor-pointer"
+            >
+              ← Retour aux exercices
+            </button>
+            <span className="text-xs font-bold text-indigo-500 uppercase tracking-wide">
+              Exercice {selectedExercise.id} / {currentExercises.length}
+            </span>
+          </div>
+
+          <div className="text-center space-y-1">
+            <h2 className="text-xl font-black text-indigo-600">{selectedExercise.title}</h2>
+          </div>
+
+          <div className="py-4">{renderInformatiqueGame(selectedExercise)}</div>
+
+          {feedback && (
+            <div
+              className={`p-4 rounded-2xl flex items-center justify-between border-2 ${
+                feedback.success
+                  ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                  : 'bg-rose-50 border-rose-200 text-rose-800'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                {feedback.success ? <CheckCircle className="w-6 h-6 text-emerald-600" /> : <XCircle className="w-6 h-6 text-rose-600" />}
+                <span className="font-black text-sm">{feedback.message}</span>
+              </div>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

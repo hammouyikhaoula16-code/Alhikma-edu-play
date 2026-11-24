@@ -52,9 +52,9 @@ export const exerciseData = {
         section: "تربية إسلامية",
         title: "1. العقيدة",
         question: "مَنْ خَلَقَ الإِنْسَانَ؟",
-        type: "multiple_choice",
-        options: ["اللَّهُ سُبْحَانَهُ وَتَعَالَى", "الطَّبِيعَةُ", "الإِنْسَانُ", "المَلَائِكَةُ"],
-        correct: 0
+        type: "input_text",
+        //options: ["اللَّهُ سُبْحَانَهُ وَتَعَالَى", "الطَّبِيعَةُ", "الإِنْسَانُ", "المَلَائِكَةُ"],
+        target: "الله سبحانه و تعالى"
       },
       {
         id: 2,
@@ -223,7 +223,58 @@ export const exerciseData = {
   
 
   ce1: {
-    informatique: [], // En attente de tes exercices
+    informatique: [
+  {
+    id: 1,
+    title: "1. Puzzle de l'imprimante (6 pièces)",
+    description: "Glisse et assemble les 6 morceaux pour reconstituer l'image de l'imprimante !",
+    type: "puzzle_6",
+    imageUrl: "/printer.webp" 
+  },
+  {
+    id: 2,
+    title: "2. Grille de mots cachés (Périphériques)",
+    description: "Retrouve et entoure les mots cachés dans la grille (CLAVIER, SOURIS, MODEM, ECRAN, WEBCAM...).",
+    type: "word_search",
+    grid: [
+      ["A", "W", "E", "B", "C", "A", "M"],
+      ["I", "V", "C", "T", "B", "J", "K"],
+      ["D", "S", "R", "Q", "H", "X", "L"],
+      ["C", "L", "A", "V", "I", "E", "R"],
+      ["Z", "G", "N", "F", "Y", "P", "M"],
+      ["D", "A", "M", "O", "D", "E", "M"],
+      ["X", "S", "O", "U", "R", "I", "S"]
+    ],
+    wordsToFind: ["CLAVIER", "SOURIS", "MODEM", "WEBCAM"]
+  },
+  {
+    id: 3,
+    title: "3. Copier un texte (Traitement de texte)",
+    description: "Recopie le texte ci-dessous exactement sans faire de fautes dans le cadre de saisie.",
+    type: "text_copy",
+    targetText: "L'ordinateur est une machine électronique utile pour apprendre et travailler."
+  },
+  {
+    id: 4,
+    title: "4. Le Bureau et le Menu Démarrer",
+    description: "Clique sur l'élément qui permet d'ouvrir le menu principal de l'ordinateur.",
+    type: "click_target",
+    targetWord: "Menu Démarrer",
+    items: ["Icône Corbeille", "Menu Démarrer", "Câble réseau", "Prise secteur"]
+  },
+  {
+    id: 5,
+    title: "5. Périphérique Interne ou Externe ?",
+    description: "Classe ces éléments en choisissant s'ils sont à l'intérieur ou à l'extérieur de l'unité centrale.",
+    type: "categorization",
+    items: [
+      { name: "Le disque dur (interne)", category: "Interne" },
+      { name: "La souris", category: "Externe" },
+      { name: "Le processeur", category: "Interne" },
+      { name: "L'écran", category: "Externe" }
+    ]
+  }
+], 
    arabe: [
       
       {
@@ -247,8 +298,8 @@ export const exerciseData = {
       {
         id: 3,
         section: "تربية إسلامية",
-        title: "3. طفولة الرسول ﷺ",
-        question: "مَا اسْمُ مُرْضِعَةِ الرَّسُولِ ﷺ؟",
+        title: "3. طفولة الرسول ",
+        question: "مَا اسْمُ مُرْضِعَةِ الرَّسُولِ  ؟",
         type: "multiple_choice",
         options: ["آمِنَةُ بِنْتُ وَهْبٍ", "خَدِيجَةُ بِنْتُ خُوَيْلِدٍ", "حَلِيمَةُ السَّعْدِيَّةُ", "فَاطِمَةُ الزَّهْرَاءُ"],
         correct: 2
@@ -329,7 +380,7 @@ export const exerciseData = {
         id: 12,
         section: "اللغة العربية",
         title: "5. التقطيع المقطعي",
-        question: "كَمْ عَدَدُ مَقَاطِعِ كَلِمَةِ ( حَدِيقَةٌ )؟ [ حَـ / دِيـ / قَـ / ـةٌ ]",
+        question: "كَمْ عَدَدُ مَقَاطِعِ كَلِمَةِ ( حَدِيقَةٌ )؟ ",
         type: "multiple_choice",
         options: ["مَقْطَعَانِ (2)", "3 مَقَاطِعَ", "4 مَقَاطِعَ", "5 مَقَاطِعَ"],
         correct: 2
@@ -367,7 +418,7 @@ export const exerciseData = {
         title: "2. Masculin ou Féminin",
         question: "Quel article met-on devant le mot '... école' ?",
         type: "multiple_choice",
-        options: ["Un", "Le", "Une", "Des"],
+        options: ["Un", "Le", "L'", "Des"],
         correct: 2
       },
       {
@@ -441,8 +492,8 @@ export const exerciseData = {
       {
         id: 1,
         section: "تربية إسلامية",
-        title: "1. طفولة الرسول ﷺ",
-        question: "مَا اسْمُ مُرْضِعَةِ الرَّسُولِ ﷺ؟",
+        title: "1. طفولة الرسول ",
+        question: "مَا اسْمُ مُرْضِعَةِ الرَّسُولِ  ؟",
         type: "multiple_choice",
         options: ["آمِنَةُ بِنْتُ وَهْبٍ", "حَلِيمَةُ السَّعْدِيَّةُ", "خَدِيجَةُ بِنْتُ خُوَيْلِدٍ", "عَائِشَةُ رَضِيَ اللَّهُ عَنْهَا"],
         correct: 1
@@ -450,8 +501,8 @@ export const exerciseData = {
       {
         id: 2,
         section: "تربية إسلامية",
-        title: "2. نسب الرسول ﷺ",
-        question: "مَا اسْمُ وَالِدِ الرَّسُولِ ﷺ؟",
+        title: "2. نسب الرسول ",
+        question: "مَا اسْمُ وَالِدِ الرَّسُولِ  ؟",
         type: "multiple_choice",
         options: ["أَبُو طَالِبٍ", "عَبْدُ المُطَّلِبِ", "عَبْدُ اللَّهِ", "حَمْزَةُ"],
         correct: 2
@@ -461,9 +512,9 @@ export const exerciseData = {
         section: "تربية إسلامية",
         title: "3. الكتب السماوية",
         question: "مَا هُوَ كِتَابُ المُسْلِمِينَ؟",
-        type: "multiple_choice",
-        options: ["التَّوْرَاةُ", "الإِنْجِيلُ", "القُرْآنُ الكَرِيمُ", "الزَّبُورُ"],
-        correct: 2
+        type: "input_text",
+        //options: ["التَّوْرَاةُ", "الإِنْجِيلُ", "القُرْآنُ الكَرِيمُ", "الزَّبُورُ"],
+        target: "القران الكريم"
       },
       {
         id: 4,
@@ -530,46 +581,144 @@ export const exerciseData = {
         correct: 2
       }
     ],
-    francaise: [
+   francaise: [
       {
         id: 1,
-        title: "1. Les types de phrases",
-        question: "Quel type de phrase est : 'Quelle belle journée !' ?",
+        section: "Grammaire",
+        lang: "fr",
+        title: "1. Nom et adjectif",
+        question: "Dans la phrase « Le lion est fort », quels sont le nom et l'adjectif ?",
         type: "multiple_choice",
-        options: ["Déclarative", "Interrogative", "Exclamative", "Impérative"],
-        correct: 2
+        options: [
+          "Nom : lion / Adjectif : fort",
+          "Nom : fort / Adjectif : lion",
+          "Nom : est / Adjectif : lion",
+          "Nom : lion / Adjectif : est"
+        ],
+        correct: 0
       },
       {
         id: 2,
-        title: "2. Conjugaison au futur",
-        question: "Complète au futur simple : 'Demain, tu ... tes devoirs.' (faire)",
-        type: "input_text",
-        target: "feras"
+        section: "Grammaire",
+        lang: "fr",
+        title: "2. Les articles",
+        question: "Complète avec le bon article : « ... éléphant est grand. »",
+        type: "multiple_choice",
+        options: ["L'", "La", "Les", "Une"],
+        correct: 0
       },
       {
         id: 3,
-        title: "3. Le groupe nominal",
-        question: "Dans 'Le petit chien noir', quel est le nom noyau ?",
-        type: "multiple_choice",
-        options: ["petit", "chien", "noir", "Le"],
-        correct: 1
+        section: "Grammaire",
+        lang: "fr",
+        title: "3. La forme négative",
+        question: "Mets la phrase « Le lion dort. » à la forme négative :",
+        type: "input_text",
+        target: "Le lion ne dort pas"
       },
       {
         id: 4,
-        title: "4. Orthographe (a / à)",
-        question: "Dans la phrase 'Il va à l'école', 'à' est une préposition avec accent.",
-        type: "true_false",
-        answer: true
+        section: "Grammaire",
+        lang: "fr",
+        title: "4. Le sujet",
+        question: "Dans la phrase « Les oiseaux chantent. », quel est le sujet ?",
+        type: "multiple_choice",
+        options: ["Les oiseaux", "chantent", "Les", "oiseaux chantent"],
+        correct: 0
       },
       {
         id: 5,
-        title: "5. Les synonymes",
-        question: "Quel est le synonyme du mot 'joyeux' ?",
+        section: "Conjugaison",
+        lang: "fr",
+        title: "1. Présent de l'indicatif",
+        question: "Conjugue au présent : « Le chat (manger) du poisson. »",
+        type: "input_text",
+        target: "mange"
+      },
+      {
+        id: 6,
+        section: "Conjugaison",
+        lang: "fr",
+        title: "2. Trouver le verbe",
+        question: "Quel est le verbe dans la phrase « Le singe mange une banane. » ?",
         type: "multiple_choice",
-        options: ["Triste", "Heureux", "Fatigué", "Fâché"],
+        options: ["Le singe", "mange", "une banane", "singe"],
         correct: 1
+      },
+      {
+        id: 7,
+        section: "Conjugaison",
+        lang: "fr",
+        title: "3. Conjuguer un verbe du 2e groupe",
+        question: "Conjugue au présent : « Le lion (rugir) très fort. »",
+        type: "input_text",
+        target: "rugit"
+      },
+      {
+        id: 8,
+        section: "Orthographe",
+        lang: "fr",
+        title: "1. Homophones (a / à)",
+        question: "Complète avec a ou à : « Le chien va ... la maison. »",
+        type: "multiple_choice",
+        options: ["à", "a"],
+        correct: 0
+      },
+      {
+        id: 9,
+        section: "Orthographe",
+        lang: "fr",
+        title: "2. Homophones (et / est)",
+        question: "Complète avec et / est : « Le lion ... fort ... courageux. »",
+        type: "multiple_choice",
+        options: [
+          "est / et",
+          "et / est",
+          "est / est",
+          "et / et"
+        ],
+        correct: 0
+      },
+      {
+        id: 10,
+        section: "Orthographe",
+        lang: "fr",
+        title: "3. Homophones (son / sont)",
+        question: "Complète avec son ou sont : « Les animaux ... dans la savane. »",
+        type: "multiple_choice",
+        options: ["sont", "son"],
+        correct: 0
+      },
+      {
+        id: 11,
+        section: "Orthographe",
+        lang: "fr",
+        title: "4. Accord au pluriel",
+        question: "Mets la phrase au pluriel : « Le chat mange. »",
+        type: "input_text",
+        target: "Les chats mangent"
+      },
+      {
+        id: 12,
+        section: "Lexique",
+        lang: "fr",
+        title: "1. Vocabulaire des animaux",
+        question: "« C'est le roi des animaux, c'est ... ? »",
+        type: "multiple_choice",
+        options: ["Le lion", "Le chat", "Le singe", "L'oiseau"],
+        correct: 0
+      },
+      {
+        id: 13,
+        section: "Lexique",
+        lang: "fr",
+        title: "2. Les contraires",
+        question: "Donne le contraire de « grand » :",
+        type: "input_text",
+        target: "petit"
       }
     ],
+    
     mathematique: [
      
       {
@@ -709,7 +858,61 @@ export const exerciseData = {
     ]
   },
   cm1: {
-    informatique: [], // En attente de tes exercices
+    informatique: [
+      {
+        id: 1,
+        section: "Volet 1 : Découvrir l'ordinateur",
+        title: "1. Périphérique d'entrée ou de sortie ?",
+        description: "Classe chaque matériel selon son rôle : Entrée (envoyer des infos) ou Sortie (afficher/produire).",
+        type: "categorization",
+        items: [
+          { name: "Clavier", category: "Entrée" },
+          { name: "Écran", category: "Sortie" },
+          { name: "Souris", category: "Entrée" },
+          { name: "Imprimante", category: "Sortie" }
+        ]
+      },
+      {
+        id: 2,
+        section: "Volet 2 : Comment utiliser mon ordinateur ?",
+        title: "2. Fichiers, dossiers et logiciels",
+        description: "Clique sur l'élément qui sert à ranger plusieurs fichiers ensemble.",
+        type: "click_target",
+        targetWord: "Un dossier",
+        items: ["Un dossier", "Un moteur de recherche", "Une police d'écriture", "Un clic droit"]
+      },
+      {
+        id: 3,
+        section: "Volet 3 : Le traitement de texte",
+        title: "3. Insérer un objet dans un document",
+        description: "Recopie exactement cette phrase sur l'insertion d'un objet dans un texte :",
+        type: "text_copy",
+        targetText: "J'insère une image dans mon document pour illustrer mon texte."
+      },
+      {
+        id: 4,
+        section: "Volet 4 : S'informer et communiquer",
+        title: "4. Bien utiliser un moteur de recherche",
+        description: "Clique sur les bons mots-clés pour chercher un exposé sur les planètes du système solaire.",
+        type: "click_target",
+        targetWord: "planètes système solaire",
+        items: ["planètes système solaire", "azertyuiop", "mot de passe wifi", "corbeille windows"]
+      },
+      {
+        id: 5,
+        section: "Volet 5 : Programmer avec l'ordinateur",
+        title: "5. Défi Logo : tracer un carré",
+        description: "Choisis la suite d'instructions qui permet de répéter 4 fois un mouvement et un quart de tour (90°).",
+        type: "click_target",
+        targetWord: "RÉPÈTE 4 [ AVANCE 50 DROITE 90 ]",
+        items: [
+          "RÉPÈTE 4 [ AVANCE 50 DROITE 90 ]",
+          "RÉPÈTE 2 [ RECULE 10 ]",
+          "EFFACE TOUT",
+          "SAUVEGARDER FICHIER"
+        ]
+      }
+    ],
     arabe: [
      
       {
@@ -762,7 +965,7 @@ export const exerciseData = {
         section: "تربية إسلامية",
         lang: "ar",
         title: "4. السيرة النبوية",
-        question: "أَيْنَ وُلِدَ الرَّسُولُ ﷺ؟",
+        question: "أَيْنَ وُلِدَ الرَّسُولُ  ؟",
         type: "multiple_choice",
         options: [
           "فِي المَدِينَةِ المُنَوَّرَةِ",
@@ -776,8 +979,8 @@ export const exerciseData = {
         id: 5,
         section: "تربية إسلامية",
         lang: "ar",
-        title: "5. نسب الرسول ﷺ",
-        question: "مَنْ هِيَ أُمُّ الرَّسُولِ ﷺ؟",
+        title: "5. نسب الرسول ",
+        question: "مَنْ هِيَ أُمُّ الرَّسُولِ  ؟",
         type: "multiple_choice",
         options: [
           "حَلِيمَةُ السَّعْدِيَّةُ",
@@ -866,49 +1069,7 @@ export const exerciseData = {
       }
     ],
     francaise: [
-      {
-        id: 1,
-        lang: "fr",
-        title: "1. Les compléments du verbe",
-        question: "Dans la phrase 'Les élèves lisent un livre.', quelle est la fonction de 'un livre' ?",
-        type: "multiple_choice",
-        options: ["Sujet", "Complément d'objet direct (COD)", "Complément circonstanciel", "Adjectif"],
-        correct: 1
-      },
-      {
-        id: 2,
-        lang: "fr",
-        title: "2. Conjugaison à l'imparfait",
-        question: "Conjugue le verbe 'finir' à l'imparfait : 'Autrefois, nous ... nos devoirs tôt.'",
-        type: "input_text",
-        target: "finissions"
-      },
-      {
-        id: 3,
-        lang: "fr",
-        title: "3. L'accord de l'adjectif",
-        question: "Quelle est la bonne orthographe : 'Des fleurs ...' ?",
-        type: "multiple_choice",
-        options: ["blanches", "blanche", "blancs", "blanc"],
-        correct: 0
-      },
-      {
-        id: 4,
-        lang: "fr",
-        title: "4. Homophones grammaticaux (on / ont)",
-        question: "Dans 'Les enfants ont fini de jouer', 'ont' est le verbe avoir conjugué.",
-        type: "true_false",
-        answer: true
-      },
-      {
-        id: 5,
-        lang: "fr",
-        title: "5. Les familles de mots",
-        question: "Quel mot n'appartient pas à la famille de 'terre' ?",
-        type: "multiple_choice",
-        options: ["Terrestre", "Enterrer", "Terrible", "Terrain"],
-        correct: 2
-      }
+      
     ],
     mathematique: [
      
@@ -1045,6 +1206,653 @@ export const exerciseData = {
         question: "Karim a 5 billets de 20 dirhams. Combien de dirhams a-t-il au total ?",
         type: "input_text",
         target: "100"
+      }
+    ]
+  },
+  cm2: {
+    informatique: [], // Exclus comme demandé
+    arabe: [
+      {
+        id: 1,
+        section: "تربية إسلامية",
+        lang: "ar",
+        title: "1. العقيدة",
+        question: "مَا مَعْنَى الإِيمَانِ بِالكُتُبِ السَّمَاوِيَّةِ؟",
+        type: "multiple_choice",
+        options: [
+          "قِرَاءَتُهَا فَقَطْ دُونَ العَمَلِ بِهَا",
+          "التَّصْدِيقُ الجَازِمُ بِأَنَّ اللَّهَ أَنْزَلَهَا عَلَى رُسُلِهِ وَأَنَّ القُرْآنَ خَاتَمُهَا وَمُهَيْمِنٌ عَلَيْهَا",
+          "حِفْظُ بَعْضِ آيَاتِهَا فَقَطْ",
+          "مَعْرِفَةُ أَسْمَائِهَا دُونَ إِيمَانٍ"
+        ],
+        correct: 1
+      },
+      {
+        id: 2,
+        section: "تربية إسلامية",
+        lang: "ar",
+        title: "2. العبادات",
+        question: "مَا حُكْمُ الزَّكَاةِ فِي الإِسْلَامِ؟",
+        type: "multiple_choice",
+        options: [
+          "سُنَّةٌ مُؤَكَّدَةٌ",
+          "فَرْضٌ وَرُكْنٌ مِنْ أَرْكَانِ الإِسْلَامِ عَلَى مَنْ مَلَكَ النِّصَابَ وَحَالَ عَلَيْهِ الحَوْلُ",
+          "مُسْتَحَبَّةٌ",
+          "مُبَاحَةٌ"
+        ],
+        correct: 1
+      },
+      {
+        id: 3,
+        section: "تربية إسلامية",
+        lang: "ar",
+        title: "3. السيرة النبوية",
+        question: "مَا اسْمُ المَدِينَةِ الَّتِي هَاجَرَ إِلَيْهَا الرَّسُولُ  ؟",
+        type: "multiple_choice",
+        options: [
+          "مَكَّةَ المُكَرَّمَةِ",
+          "يَثْرِبَ (المَدِينَةَ المُنَوَّرَةَ)",
+          "الطَّائِفِ",
+          "بَيْتِ المَقْدِسِ"
+        ],
+        correct: 1
+      },
+      {
+        id: 4,
+        section: "تربية إسلامية",
+        lang: "ar",
+        title: "4. القرآن الكريم",
+        question: "مَا أَعْظَمُ آيَةٍ فِي القُرْآنِ الكَرِيمِ؟",
+        type: "multiple_choice",
+        options: [
+          "آيَةُ الدَّيْنِ",
+          "آيَةُ الكُرْسِيِّ",
+          "آيَةُ النُّورِ",
+          "آيَةُ التَّطْهِيرِ"
+        ],
+        correct: 1
+      },
+      {
+        id: 5,
+        section: "تربية إسلامية",
+        lang: "ar",
+        title: "5. القيم والأخلاق",
+        question: "مَا ضِدُّ صِفَةِ ( الأَمَانَةِ )؟",
+        type: "input_text",
+        target: "الخيانة"
+      },
+
+      {
+        id: 6,
+        section: "اللغة العربية",
+        lang: "ar",
+        title: "1. النحو والإعراب",
+        question: "مَا إِعْرَابُ ( الكِتَابُ ) فِي جُمْلَةِ : ( الكِتَابُ مُفِيدٌ )؟",
+        type: "multiple_choice",
+        options: [
+          "فَاعِلٌ مَرْفُوعٌ",
+          "مُبْتَدَأٌ مَرْفُوعٌ وَعَلَامَةُ رَفْعِهِ الضَّمَّةُ الظَّاهِرَةُ",
+          "مَفْعُولٌ بِهِ مَنْصُوبٌ",
+          "اسْمٌ مَجْرُورٌ"
+        ],
+        correct: 1
+      },
+      {
+        id: 7,
+        section: "اللغة العربية",
+        lang: "ar",
+        title: "2. النواسخ الفعلية",
+        question: "مَا عَمَلُ ( كَانَ ) وَأَخَوَاتِهَا؟",
+        type: "multiple_choice",
+        options: [
+          "تَرْفَعُ المُبْتَدَأَ وَتَنْصِبُ الخَبَرَ",
+          "تَنْصِبُ المُبْتَدَأَ وَتَرْفَعُ الخَبَرَ",
+          "تَجْزِمُ الفِعْلَ المُضَارِعَ",
+          "تَجُرُّ الِاسْمَ"
+        ],
+        correct: 0
+      },
+      {
+        id: 8,
+        section: "اللغة العربية",
+        lang: "ar",
+        title: "3. الصرف والتحويل",
+        question: "مَا جَمْعُ التَّكْسِيرِ لِكَلِمَةِ ( تِلْمِيذٌ )؟",
+        type: "input_text",
+        target: "تلاميذ"
+      },
+      {
+        id: 9,
+        section: "اللغة العربية",
+        lang: "ar",
+        title: "4. الإملاء والهمزات",
+        question: "لِمَاذَا كُتِبَتِ الهَمْزَةُ عَلَى الأَلِفِ فِي كَلِمَةِ ( سَأَلَ )؟",
+        type: "multiple_choice",
+        options: [
+          "لِأَنَّهَا مَفْتُوحَةٌ وَمَا قَبْلَهَا مَفْتُوحٌ",
+          "لِأَنَّهَا سَاكِنَةٌ",
+          "لِأَنَّهَا مَكْسُورَةٌ",
+          "لِأَنَّ مَا قَبْلَهَا مَضْمُومٌ"
+        ],
+        correct: 0
+      },
+      {
+        id: 10,
+        section: "اللغة العربية",
+        lang: "ar",
+        title: "5. التعبير والأساليب",
+        question: "حَوِّلِ الجُمْلَةَ إِلَى المُضَارِعِ : ( كَتَبَ التِّلْمِيذُ الدَّرْسَ )",
+        type: "multiple_choice",
+        options: [
+          "يَكْتُبُ التِّلْمِيذُ الدَّرْسَ",
+          "اُكْتُبِ الدَّرْسَ",
+          "التِّلْمِيذُ كَاتِبٌ",
+          "لَمْ يَكْتُبِ التِّلْمِيذُ"
+        ],
+        correct: 0
+      }
+    ],
+    francaise: [
+      {
+        id: 1,
+        lang: "fr",
+        title: "1. Les propositions et la phrase complexe",
+        question: "Dans 'Je révise mes leçons parce que j'ai un contrôle.', comment s'appelle la proposition 'parce que j'ai un contrôle' ?",
+        type: "multiple_choice",
+        options: [
+          "Proposition subordonnée relative",
+          "Proposition subordonnée conjonctive circonstancielle de cause",
+          "Proposition indépendante coordonnée",
+          "Complément d'objet indirect"
+        ],
+        correct: 1
+      },
+      {
+        id: 2,
+        lang: "fr",
+        title: "2. Conjugaison au passé composé",
+        question: "Conjugue le verbe 'aller' au passé composé à la 1re personne du pluriel : 'Nous ... au collège.'",
+        type: "input_text",
+        target: "sommes allés"
+      },
+      {
+        id: 3,
+        lang: "fr",
+        title: "3. L'accord du participe passé",
+        question: "Quelle est la bonne orthographe : 'Les lettres que j'ai ... sont prêtes.' ?",
+        type: "multiple_choice",
+        options: ["écrit", "écrits", "écrite", "écrites"],
+        correct: 3
+      },
+      {
+        id: 4,
+        lang: "fr",
+        title: "4. Homophones grammaticaux (leur / leurs)",
+        question: "Devant un nom au pluriel comme 'leurs cahiers', 'leurs' s'écrit avec un 's'.",
+        type: "true_false",
+        answer: true
+      },
+      {
+        id: 5,
+        lang: "fr",
+        title: "5. Vocabulaire : Les suffixes",
+        question: "Quel suffixe permet de former un nom d'action à partir du verbe 'organiser' ?",
+        type: "multiple_choice",
+        options: ["-able", "-ation", "-eux", "-ette"],
+        correct: 1
+      }
+    ],
+    mathematique: [
+      {
+        id: 1,
+        section: "النشاط العلمي",
+        lang: "ar",
+        title: "1. الجهاز العصبي والحواس",
+        question: "مَا دَوْرُ الدِّمَاغِ فِي الجِهَازِ العَصَبِيِّ؟",
+        type: "multiple_choice",
+        options: [
+          "ضَخُّ الدَّمِ إِلَى الأَعْضَاءِ",
+          "مُعَالَجَةُ المَعْلُومَاتِ الحِسِّيَّةِ وَإِصْدَارُ الأَوَامِرِ الحَرَكِيَّةِ",
+          "هَضْمُ الأَغْذِيَةِ",
+          "تَبَادُلُ الغَازَاتِ"
+        ],
+        correct: 1
+      },
+      {
+        id: 2,
+        section: "النشاط العلمي",
+        lang: "ar",
+        title: "2. الدارة الكهربائية البسيطة",
+        question: "مَا هِيَ العَنَاصِرُ الأَسَاسِيَّةُ لِدَارَةٍ كَهْرَبَائِيَّةٍ بَسِيطَةٍ؟",
+        type: "multiple_choice",
+        options: [
+          "عَمُودٌ كَهْرَبَائِيٌّ، مِصْبَاحٌ، أَسْلَاكُ تَوْصِيلٍ، وَقَاطِعُ التَّيَّارِ",
+          "مِصْبَاحٌ فَقَطْ",
+          "مِغْنَاطِيسٌ وَمَاءٌ",
+          "بُوصَلَةٌ وَمِرْآةٌ"
+        ],
+        correct: 0
+      },
+      {
+        id: 3,
+        section: "النشاط العلمي",
+        lang: "ar",
+        title: "3. المواد الموصلة والعازلة",
+        question: "أَيُّ المَوَادِّ التَّالِيَةِ يُعَدُّ مُوَصِّلًا جَيِّدًا لِلكَهْرَبَاءِ؟",
+        type: "multiple_choice",
+        options: [
+          "البْلَاسْتِيكُ",
+          "الخَشَبُ الجَافُّ",
+          "النُّحَاسُ",
+          "الزُّجَاجُ"
+        ],
+        correct: 2
+      },
+      {
+        id: 4,
+        section: "النشاط العلمي",
+        lang: "ar",
+        title: "4. الأرض والمجموعة الشمسية",
+        question: "مَا الظَّاهِرَةُ النَّاتِجَةُ عَنْ دَوَرَانِ الأَرْضِ حَوْلَ نَفْسِهَا؟",
+        type: "multiple_choice",
+        options: [
+          "تَعَاقُبُ الفُصُولِ الأَرْبَعَةِ",
+          "تَعَاقُبُ اللَّيْلِ وَالنَّهَارِ",
+          "خُسُوفُ القَمَرِ فَقَطْ",
+          "تَغَيُّرُ الجَاذِبِيَّةِ"
+        ],
+        correct: 1
+      },
+      {
+        id: 5,
+        section: "النشاط العلمي",
+        lang: "ar",
+        title: "5. التغذية والهضم",
+        question: "أَيْنَ تَتِمُّ عَمَلِيَّةُ الهَضْمِ بِشَكْلٍ رَئِيسِيٍّ وَيُمْتَصُّ القُوتُ إِلَى الدَّمِ؟",
+        type: "multiple_choice",
+        options: [
+          "فِي المِعَى الدَّقِيقِ",
+          "فِي المَرِيءِ",
+          "فِي القَلْبِ",
+          "فِي الرِّئَةِ"
+        ],
+        correct: 0
+      },
+
+      {
+        id: 6,
+        section: "Mathématiques",
+        lang: "fr",
+        title: "1. Fractions et nombres décimaux",
+        question: "Quelle est l'écriture décimale de la fraction 3 / 4 ?",
+        type: "multiple_choice",
+        options: ["0,25", "0,5", "0,75", "1,25"],
+        correct: 2
+      },
+      {
+        id: 7,
+        section: "Mathématiques",
+        lang: "fr",
+        title: "2. Géométrie : Aire du rectangle",
+        question: "Calcule l'aire (en cm²) d'un rectangle de longueur 8 cm et de largeur 5 cm.",
+        type: "input_text",
+        target: "40"
+      },
+      {
+        id: 8,
+        section: "Mathématiques",
+        lang: "fr",
+        title: "3. Proportionnalité",
+        question: "Si 3 cahiers coûtent 24 dirhams, combien coûtent 6 cahiers au même prix ?",
+        type: "input_text",
+        target: "48"
+      },
+      {
+        id: 9,
+        section: "Mathématiques",
+        lang: "fr",
+        title: "4. Conversion d'unités",
+        question: "Combien vaut 2,5 mètres en centimètres ?",
+        type: "input_text",
+        target: "250"
+      },
+      {
+        id: 10,
+        section: "Mathématiques",
+        lang: "fr",
+        title: "5. Angles géométriques",
+        question: "Quel type d'angle mesure exactement 90° ?",
+        type: "multiple_choice",
+        options: [
+          "Un angle aigu",
+          "Un angle obtus",
+          "Un angle droit",
+          "Un angle plat"
+        ],
+        correct: 2
+      }
+    ]
+  },
+  sixieme: {
+    informatique: [],
+    arabe: [
+      {
+        id: 1,
+        section: "تربية إسلامية",
+        lang: "ar",
+        title: "1. العقيدة",
+        question: "مَا أَثَرُ الإِيمَانِ بِالقَدَرِ خَيْرِهِ وَشَرِّهِ عَلَى سُلُوكِ المُسْلِمِ؟",
+        type: "multiple_choice",
+        options: [
+          "الاسْتِسْلَامُ لِلكَسَلِ وَتَرْكُ الأَخْذِ بِالأَسْبَابِ",
+          "طُمَأْنِينَةُ القَلْبِ، الصِّبْرُ عِنْدَ الشَّدَائِدِ، وَالحِرْصُ عَلَى العَمَلِ الجَادِّ",
+          "التَّوَاكُلُ وَإِلْقَاءُ اللَّوْمِ عَلَى الآخَرِينَ",
+          "اليَأْسُ عِنْدَ التَّعَثُّرِ"
+        ],
+        correct: 1
+      },
+      {
+        id: 2,
+        section: "تربية إسلامية",
+        lang: "ar",
+        title: "2. العبادات",
+        question: "مَا الفَرْقُ بَيْنَ الصَّلَاةِ المَفْرُوضَةِ وَصَلَاةِ التَّطَوُّعِ؟",
+        type: "multiple_choice",
+        options: [
+          "الفَرْضُ وَاجِبٌ يَأْثَمُ تَارِكُهُ، وَالتَّطَوُّعُ نَافِلَةٌ تَزِيدُ الأَجْرَ وَتُكَمِّلُ النَّقْصَ",
+          "التَّطَوُّعُ أَوْجَبُ مِنَ الفَرْضِ",
+          "لَا فَرْقَ بَيْنَهُمَا فِي الحُكْمِ",
+          "التَّطَوُّعُ يُسْقِطُ الفَرْضَ"
+        ],
+        correct: 0
+      },
+      {
+        id: 3,
+        section: "تربية إسلامية",
+        lang: "ar",
+        title: "3. السيرة النبوية",
+        question: "مَا أَهَمِّيَّةُ صُلْحِ الحُدَيْبِيَةِ فِي تَارِيخِ الدَّعْوَةِ الإِسْلَامِيَّةِ؟",
+        type: "multiple_choice",
+        options: [
+          "إِنْهَاءُ الدَّعْوَةِ فِي مَكَّةَ",
+          "تَرْسِيخُ السِّلْمِ وَفَتْحُ مَجَالِ التَّوَاصُلِ وَانْتِشَارِ الإِسْلَامِ بِصُورَةٍ أَوْسَعَ",
+          "إِلْغَاءُ الحَجِّ إِلَى الأَبَدِ",
+          "تَأْجِيلُ الهِجْرَةِ الأُولَى"
+        ],
+        correct: 1
+      },
+      {
+        id: 4,
+        section: "تربية إسلامية",
+        lang: "ar",
+        title: "4. القرآن الكريم",
+        question: "مَا مَعْنَى كَلِمَةِ ( التَّقْوَى ) فِي القُرْآنِ الكَرِيمِ؟",
+        type: "multiple_choice",
+        options: [
+          "مُرَاقَبَةُ اللَّهِ فِي السِّرِّ وَالعَلَنِ وَامْتِثَالُ أَوَامِرِهِ وَاجْتِنَابُ نَوَاهِيهِ",
+          "كَثْرَةُ الكَلَامِ فَقَطْ",
+          "الاعْتِزَالُ التَّامُّ عَنِ النَّاسِ",
+          "إِهْمَالُ حُقُوقِ الغَيْرِ"
+        ],
+        correct: 0
+      },
+      {
+        id: 5,
+        section: "تربية إسلامية",
+        lang: "ar",
+        title: "5. القيم المدنية والبيئية",
+        question: "مَا ضِدُّ كَلِمَةِ ( التَّسَامُحِ )؟",
+        type: "input_text",
+        target: "التعصب"
+      },
+
+      {
+        id: 6,
+        section: "اللغة العربية",
+        lang: "ar",
+        title: "1. النحو والإعراب",
+        question: "مَا إِعْرَابُ ( المُجْتَهِدُونَ ) فِي جُمْلَةِ : ( نَجَحَ المُجْتَهِدُونَ )؟",
+        type: "multiple_choice",
+        options: [
+          "مُبْتَدَأٌ مَرْفُوعٌ بِالضَّمَّةِ",
+          "فَاعِلٌ مَرْفُوعٌ وَعَلَامَةُ رَفْعِهِ الوَاوُ لِأَنَّهُ جَمْعُ مُذَكَّرٍ سَالِمٌ",
+          "مَفْعُولٌ بِهِ مَنْصُوبٌ بِاليَاءِ",
+          "نَعْتٌ مَجْرُورٌ"
+        ],
+        correct: 1
+      },
+      {
+        id: 7,
+        section: "اللغة العربية",
+        lang: "ar",
+        title: "2. الأفعال الخمسة ونصب المضارع",
+        question: "مَا عَلَامَةُ جَزْمِ الفِعْلِ المُضَارِعِ إِذَا كَانَ مِنَ الأَفْعَالِ الخَمْسَةِ؟",
+        type: "multiple_choice",
+        options: [
+          "السُّكُونُ الظَّاهِرُ",
+          "حَذْفُ النُّونِ",
+          "حَذْفُ حَرْفِ العِلَّةِ",
+          "الفَتْحَةُ"
+        ],
+        correct: 1
+      },
+      {
+        id: 8,
+        section: "اللغة العربية",
+        lang: "ar",
+        title: "3. الصرف والتحويل",
+        question: "مَا اسْمُ الفَاعِلِ مِنَ الفِعْلِ الثُّلَاثِيِّ ( كَتَبَ )؟",
+        type: "input_text",
+        target: "كاتب"
+      },
+      {
+        id: 9,
+        section: "اللغة العربية",
+        lang: "ar",
+        title: "4. الإملاء والهمزات",
+        question: "لِمَاذَا كُتِبَتِ الهَمْزَةُ عَلَى اليَاءِ فِي كَلِمَةِ ( بِئْرٌ )؟",
+        type: "multiple_choice",
+        options: [
+          "لِأَنَّهَا سَاكِنَةٌ وَمَا قَبْلَهَا مَكْسُورٌ (وَالكَسْرَةُ أَقْوَى مِنَ السُّكُونِ)",
+          "لِأَنَّهَا مَفْتُوحَةٌ وَمَا قَبْلَهَا مَضْمُومٌ",
+          "لِأَنَّهَا مَضْمُومَةٌ وَمَا قَبْلَهَا مَفْتُوحٌ",
+          "لِأَنَّهَا مُتَطَرِّفَةٌ بَعْدَ مَدٍّ"
+        ],
+        correct: 0
+      },
+      {
+        id: 10,
+        section: "اللغة العربية",
+        lang: "ar",
+        title: "5. التراكيب والأساليب",
+        question: "حَوِّلِ الجُمْلَةَ إِلَى مَبْنِيٍّ لِلمَجْهُولِ : ( شَرَحَ الأُسْتَاذُ الدَّرْسَ )",
+        type: "multiple_choice",
+        options: [
+          "شُرِحَ الدَّرْسُ",
+          "يَشْرَحُ الأُسْتَاذُ الدَّرْسَ",
+          "الدَّرْسُ مَشْرُوحٌ",
+          "لَمْ يُشْرَحِ الدَّرْسُ"
+        ],
+        correct: 0
+      }
+    ],
+    francaise: [
+      {
+        id: 1,
+        lang: "fr",
+        title: "1. La voix active et la voix passive",
+        question: "Dans la phrase 'La lettre a été écrite par l'élève.', à quelle voix est conjugué le verbe ?",
+        type: "multiple_choice",
+        options: [
+          "À la voix active",
+          "À la voix passive",
+          "À la forme pronominale",
+          "À la forme impersonnelle"
+        ],
+        correct: 1
+      },
+      {
+        id: 2,
+        lang: "fr",
+        title: "2. Conjugaison à l'imparfait ou futur",
+        question: "Conjugue le verbe 'prendre' au futur simple à la 1re personne du pluriel : 'Demain, nous ... le train.'",
+        type: "input_text",
+        target: "prendrons"
+      },
+      {
+        id: 3,
+        lang: "fr",
+        title: "3. L'expansion du groupe nominal",
+        question: "Dans 'La maison que nous avons visitée est grande.', quelle est la nature de 'que nous avons visitée' ?",
+        type: "multiple_choice",
+        options: [
+          "Un complément circonstanciel de lieu",
+          "Une proposition subordonnée relative",
+          "Un attribut du sujet",
+          "Un complément d'agent"
+        ],
+        correct: 1
+      },
+      {
+        id: 4,
+        lang: "fr",
+        title: "4. Homophones grammaticaux (ce / se)",
+        question: "Dans 'Il se lève tôt tous les matins', 'se' est un pronom réfléchi lié à un verbe pronominal.",
+        type: "true_false",
+        answer: true
+      },
+      {
+        id: 5,
+        lang: "fr",
+        title: "5. Figures de style et vocabulaire",
+        question: "Quel mot désigne le sens contraire (antonyme) de 'généreux' ?",
+        type: "multiple_choice",
+        options: ["Égoïste", "Courtois", "Sincère", "Courageux"],
+        correct: 0
+      }
+    ],
+    mathematique: [
+      {
+        id: 1,
+        section: "النشاط العلمي",
+        lang: "ar",
+        title: "1. الدورة الدموية والقلب",
+        question: "مَا وَظِيفَةُ الشَّرَايِينِ بِشَكْلٍ عَامٍّ فِي جِسْمِ الإِنْسَانِ؟",
+        type: "multiple_choice",
+        options: [
+          "نَقْلُ الدَّمِ مِنَ القَلْبِ نَحْوَ أَعْضَاءِ الجِسْمِ",
+          "إِنْتَاجُ كُرَيَّاتِ الدَّمِ فِي المَعِدَةِ",
+          "تَصْفِيَةُ الهَوَاءِ فِي الأُنْفِ",
+          "إِفْرَازُ العَرَقِ"
+        ],
+        correct: 0
+      },
+      {
+        id: 2,
+        section: "النشاط العلمي",
+        lang: "ar",
+        title: "2. الطاقة وتحولاتها",
+        question: "مَا التَّحَوُّلُ الطَّاقِيُّ الرَّئِيسِيُّ فِي المِصْبَاحِ الكَهْرَبَائِيِّ؟",
+        type: "multiple_choice",
+        options: [
+          "مِنَ الطَّاقَةِ الحَرَارِيَّةِ إِلَى النَّوَوِيَّةِ",
+          "مِنَ الطَّاقَةِ الكَهْرَبَائِيَّةِ إِلَى طَاقَةٍ ضَوْئِيَّةٍ (وَحَرَارِيَّةٍ)",
+          "مِنَ الطَّاقَةِ الحَرَكِيَّةِ إِلَى الكِيمِيَائِيَّةِ",
+          "لَا يَحْدُثُ أَيُّ تَحَوُّلٍ لِلطَّاقَةِ"
+        ],
+        correct: 1
+      },
+      {
+        id: 3,
+        section: "النشاط العلمي",
+        lang: "ar",
+        title: "3. التكاثر عند النباتات",
+        question: "أَيْنَ تَتَوَاجَدُ الأَعْضَاءُ التَّكَاثُرِيَّةُ عِنْدَ النَّبَاتَاتِ الزَّهْرِيَّةِ؟",
+        type: "multiple_choice",
+        options: [
+          "دَاخِلَ الزَّهْرَةِ",
+          "فِي الجُذُورِ فَقَطْ",
+          "فِي الخَشَبِ المَيِّتِ",
+          "فِي التُّرْبَةِ"
+        ],
+        correct: 0
+      },
+      {
+        id: 4,
+        section: "النشاط العلمي",
+        lang: "ar",
+        title: "4. الفصول والظواهر الفلكية",
+        question: "مَا السَّبَبُ الرَّئِيسِيُّ لِتَعَاقُبِ الفُصُولِ الأَرْبَعَةِ؟",
+        type: "multiple_choice",
+        options: [
+          "دَوَرَانُ الأَرْضِ حَوْلَ الشَّمْسِ مَعَ مَيْلِ مِحْوَرِهَا",
+          "دَوَرَانُ القَمَرِ حَوْلَ الأَرْضِ فَقَطْ",
+          "تَوَقُّفُ الأَرْضِ عَنِ الدَّوَرَانِ",
+          "تَغَيُّرُ لَوْنِ الشَّمْسِ"
+        ],
+        correct: 0
+      },
+      {
+        id: 5,
+        section: "النشاط العلمي",
+        lang: "ar",
+        title: "5. حالات المادة وتحولاتها",
+        question: "مَا اسْمُ تَحَوُّلِ المَاءِ مِنَ الحَالَةِ السَّائِلَةِ إِلَى الحَالَةِ الغَازِيَّةِ؟",
+        type: "multiple_choice",
+        options: [
+          "التَّجَمُّدُ",
+          "التَّبَخُّرُ",
+          "الِانْصِهَارُ",
+          "التَّكَاثُفُ"
+        ],
+        correct: 1
+      },
+
+      {
+        id: 6,
+        section: "Mathématiques",
+        lang: "fr",
+        title: "1. Opérations sur les fractions",
+        question: "Calcule : 1/4 + 2/4.",
+        type: "multiple_choice",
+        options: ["3/8", "3/4", "1/2", "2/8"],
+        correct: 1
+      },
+      {
+        id: 7,
+        section: "Mathématiques",
+        lang: "fr",
+        title: "2. Géométrie : Aire du triangle",
+        question: "Calcule l'aire (en cm²) d'un triangle de base 6 cm et de hauteur 4 cm. (Formule : (base × hauteur) / 2)",
+        type: "input_text",
+        target: "12"
+      },
+      {
+        id: 8,
+        section: "Mathématiques",
+        lang: "fr",
+        title: "3. Pourcentages",
+        question: "Quel est 50 % de 80 ?",
+        type: "input_text",
+        target: "40"
+      },
+      {
+        id: 9,
+        section: "Mathématiques",
+        lang: "fr",
+        title: "4. Volumes et contenances",
+        question: "Combien y a-t-il de millilitres (mL) dans 1 litre (L) ?",
+        type: "input_text",
+        target: "1000"
+      },
+      {
+        id: 10,
+        section: "Mathématiques",
+        lang: "fr",
+        title: "5. Proportionnalité et vitesse",
+        question: "Une voiture roule à une vitesse constante de 60 km/h. Quelle distance parcourt-elle en 2 heures (en km) ?",
+        type: "input_text",
+        target: "120"
       }
     ]
   }

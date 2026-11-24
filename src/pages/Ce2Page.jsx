@@ -37,7 +37,11 @@ export default function Ce2Page() {
     return str
       .trim()
       .toUpperCase()
-      .replace(/[\u064B-\u065F]/g, '');
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[\u064B-\u065F]/g, '')
+      .replace(/[.,!?;:]+$/g, '')
+      .replace(/\s+/g, ' ');
   };
 
   const handleSubmitChallenge = () => {
@@ -59,7 +63,10 @@ export default function Ce2Page() {
       }
     });
 
-    const total = Math.round((correctCount / currentExercises.length) * 10);
+    const total =
+      currentExercises.length > 0
+        ? Math.round((correctCount / currentExercises.length) * 10)
+        : 0;
     setChallengeFinalScore(total);
     setChallengeSubmitted(true);
   };
@@ -78,15 +85,20 @@ export default function Ce2Page() {
     const isArabicModule = activeModule === 'arabe';
 
     return (
-      <div className="max-w-3xl mx-auto space-y-6 pb-8" dir={isArabicModule ? 'rtl' : 'ltr'}>
-        <div className={`bg-gradient-to-r ${gradientColor} p-6 rounded-3xl text-white shadow-lg flex items-center justify-between`}>
+      <div
+        className="max-w-3xl mx-auto space-y-6 pb-8"
+        dir={isArabicModule ? 'rtl' : 'ltr'}
+      >
+        <div
+          className={`bg-gradient-to-r ${gradientColor} p-6 rounded-3xl text-white shadow-lg flex items-center justify-between`}
+        >
           <div>
             <span className="bg-white/25 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">
-              {isArabicModule ? 'تحدي المستوى الثالث ابتدائي (CE2)' : 'Grand Challenge CE2'}
+              {isArabicModule
+                ? 'تحدي المستوى الثالث ابتدائي (CE2)'
+                : 'Grand Challenge CE2'}
             </span>
-            <h2 className="text-2xl font-black mt-2">
-              {moduleTitle}
-            </h2>
+            <h2 className="text-2xl font-black mt-2">{moduleTitle}</h2>
             <p className="text-xs sm:text-sm text-white/90 mt-1">
               {isArabicModule
                 ? `أجب عن التمارين التالية (${currentExercises.length} أسئلة). بمجرد اختيار الإجابة يتم قفلها!`
@@ -102,15 +114,21 @@ export default function Ce2Page() {
               <Trophy className="w-10 h-10" />
             </div>
             <h3 className="text-2xl font-black text-slate-800">
-              {isArabicModule ? 'انتهى التحدي بنجاح!' : 'Challenge Terminé !'}
+              {isArabicModule
+                ? 'انتهى التحدي بنجاح!'
+                : 'Challenge Terminé !'}
             </h3>
             <div className="text-4xl font-black text-amber-600 bg-amber-50 py-4 px-8 rounded-2xl inline-block border-2 border-amber-200">
               {challengeFinalScore} / 10
             </div>
             <p className="text-sm text-slate-600 font-medium">
               {challengeFinalScore === 10
-                ? (isArabicModule ? 'ممتاز جداً! علامة كاملة!' : 'Incroyable ! Sans faute !')
-                : (isArabicModule ? 'عمل رائع! استمر هكذا.' : 'Beau travail ! Continue de t’entraîner.')}
+                ? isArabicModule
+                  ? 'ممتاز جداً! علامة كاملة!'
+                  : 'Incroyable ! Sans faute !'
+                : isArabicModule
+                ? 'عمل رائع! استمر هكذا.'
+                : 'Beau travail ! Continue de t’entraîner.'}
             </p>
             <div>
               <button
@@ -118,7 +136,9 @@ export default function Ce2Page() {
                 className="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-2xl shadow-md transition-all flex items-center gap-2 mx-auto cursor-pointer"
               >
                 <RotateCcw className="w-4 h-4" />{' '}
-                {isArabicModule ? 'إعادة التحدي' : 'Recommencer le Challenge'}
+                {isArabicModule
+                  ? 'إعادة التحدي'
+                  : 'Recommencer le Challenge'}
               </button>
             </div>
           </div>
@@ -129,7 +149,8 @@ export default function Ce2Page() {
               const cardIsArabic = ex.lang ? ex.lang === 'ar' : isArabicModule;
               const showSectionHeader =
                 ex.section &&
-                (index === 0 || currentExercises[index - 1].section !== ex.section);
+                (index === 0 ||
+                  currentExercises[index - 1].section !== ex.section);
 
               return (
                 <React.Fragment key={ex.id}>
@@ -148,7 +169,11 @@ export default function Ce2Page() {
                     dir={cardIsArabic ? 'rtl' : 'ltr'}
                     className={`bg-white p-6 rounded-3xl border-2 shadow-sm transition-all ${
                       cardIsArabic ? 'text-right' : 'text-left'
-                    } ${isLocked ? 'border-emerald-200 bg-emerald-50/20' : 'border-slate-200'}`}
+                    } ${
+                      isLocked
+                        ? 'border-emerald-200 bg-emerald-50/20'
+                        : 'border-slate-200'
+                    }`}
                   >
                     <div className="flex items-center justify-between mb-3">
                       <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-black">
@@ -159,7 +184,9 @@ export default function Ce2Page() {
                       {isLocked && (
                         <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full">
                           <CheckCircle2 className="w-3.5 h-3.5" />{' '}
-                          {cardIsArabic ? 'تم قفل الإجابة' : 'Réponse verrouillée'}
+                          {cardIsArabic
+                            ? 'تم قفل الإجابة'
+                            : 'Réponse verrouillée'}
                         </span>
                       )}
                     </div>
@@ -176,7 +203,9 @@ export default function Ce2Page() {
                             <button
                               key={optIdx}
                               disabled={isLocked}
-                              onClick={() => handleChallengeAnswer(ex.id, option)}
+                              onClick={() =>
+                                handleChallengeAnswer(ex.id, option)
+                              }
                               className={`p-4 rounded-2xl border-2 font-black text-sm transition-all ${
                                 cardIsArabic ? 'text-right' : 'text-left'
                               } ${
